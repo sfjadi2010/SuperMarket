@@ -1,18 +1,10 @@
 ﻿@model Category
 
-@{
-    ViewData["Title"] = "Edit Category";
-}
-
 @section title {
-    @if (Model is not null)
-    {
-        <h3>Category: @Model.Name</h3>
-    }
+    <h1>Add Category</h1>
 }
 
-<form method="post" asp-controller="categories" asp-action="edit">
-    <input type="hidden" asp-for="Id" />
+<form method="post" asp-controller="categories" asp-action="create">
     <div class="text-danger" asp-validation-summary="All"></div>
     <div class="row mb-3">
         <div class="col-2">
@@ -40,7 +32,6 @@
             <button type="submit" class="btn btn-primary">Save</button>
         </div>
         <div class="col-6">
-
         </div>
     </div>
 </form>
