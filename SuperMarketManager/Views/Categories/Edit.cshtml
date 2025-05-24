@@ -1,13 +1,12 @@
 ﻿@using SuperMarketManager.Models
 @model Category
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="utf-8" />
-    <title>@ViewData["Title"] - SuperMarketManager</title>
-</head>
-<body>
-    <h1>Category: @Model.Id</h1>
-</body>
-</html>
+@{
+    ViewData["Title"] = "Edit Category";
+}
+
+@section title {
+    <h1>@ViewData["Title"]</h1>
+}
+
+<h1>Category: @Model.Id</h1>
