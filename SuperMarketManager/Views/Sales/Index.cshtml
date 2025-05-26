@@ -35,7 +35,7 @@
         </div>
 
         <div class="row mb-5">
-            <div class="col">
+            <div class="col" id="productsDetailView">
                 @*Product Details*@
             </div>            
         </div>
@@ -58,8 +58,11 @@
         $(function () {
             
             $("#SelectedCategoryId").on("change", function () {
+                // Clear the product details view when category changes
+                $("#productsDetailView").html("");
+
                 if ($(this).val() > 0) {
-                    $("#productsPartialView").load("/products/ProductsByCategoryPartial", {categoryId: $(this).val()});
+                    $("#productsPartialView").load("/products/ProductsByCategoryPartial", {categoryId: $(this).val()});                    
                 }
                 else
                 {
@@ -67,6 +70,15 @@
                     $("#productsPartialView").html("<div class='text-muted'>Please select product category.</div>");
                 }
             });            
+
+            // handle product selection
+            $("#productsPartialView").on("click", ".product-row", function() {
+                $(".product-row").removeClass("highlight");
+                $(this).addClass("highlight");
+
+                var productId = $(this).attr("product-id");
+                $("#productsDetailView").load("/sales/SellProductPartial", { productId: productId });
+            });
         });
     </script>
 }

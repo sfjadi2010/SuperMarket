@@ -14,4 +14,14 @@ public class SalesController : Controller
 
         return View(salesViewModel);
     }
+
+    public IActionResult SellProductPartial(int productId)
+    {
+        var product = ProductsRepository.GetProductById(productId);
+        if (product is null)
+        {
+            return NotFound();
+        }
+        return PartialView("_SellProduct", product);
+    }
 }
