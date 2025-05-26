@@ -10,7 +10,12 @@ public static class CategoriesRepository
     };
     public static IEnumerable<Category> GetCategories() => _categories;
     public static Category? GetCategoryById(int id) => _categories.FirstOrDefault(c => c.Id == id);
-    public static void AddCategory(Category category) => _categories.Add(category);
+    public static void AddCategory(Category category)
+    {
+        var maxId = _categories.Count > 0 ? _categories.Max(x => x.Id) : 0;
+        category.Id = maxId + 1;
+        _categories.Add(category);
+    }
     public static void UpdateCategory(Category category)
     {
         var existingCategory = GetCategoryById(category.Id);

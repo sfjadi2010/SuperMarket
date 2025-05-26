@@ -12,6 +12,7 @@ namespace SuperMarketManager.Controllers
         }
         public IActionResult Create()
         {
+            ViewBag.Action = "create";
             var category = new Category();
             return View(category);
         }
@@ -22,13 +23,14 @@ namespace SuperMarketManager.Controllers
             if (ModelState.IsValid)
             {
                 CategoriesRepository.AddCategory(category);
-                return RedirectToAction("Index");
+                return RedirectToAction(nameof(Index));
             }
             return View(category);
         }
 
         public IActionResult Edit([FromRoute] int? id)
         {
+            ViewBag.Action = "edit";
             var category = CategoriesRepository.GetCategoryById(id ?? 0);
 
             return View(category);
@@ -41,7 +43,7 @@ namespace SuperMarketManager.Controllers
             {
                 CategoriesRepository.UpdateCategory(category);
 
-                return RedirectToAction("Index");
+                return RedirectToAction(nameof(Index));
             }
             return View(category);
         }
@@ -49,7 +51,7 @@ namespace SuperMarketManager.Controllers
         public IActionResult Delete(int? id)
         {
             CategoriesRepository.DeleteCategory(id ?? 0);
-            return RedirectToAction("Index");
+            return RedirectToAction(nameof(Index));
         }
     }
 }
