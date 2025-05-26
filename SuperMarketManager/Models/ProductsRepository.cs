@@ -70,4 +70,11 @@ public static class ProductsRepository
             _products.Remove(product);
         }
     }
+
+    public static List<Product> GetProductsByCategoryId(int categoryId, bool loadCategory = false)
+    {
+        var products = _products.Where(p => p.CategoryId == categoryId).ToList();
+
+        return products ?? new List<Product>();
+    }
 }

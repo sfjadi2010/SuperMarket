@@ -1,0 +1,72 @@
+﻿@model SalesViewModel
+
+@section title {
+    <div class="row">
+        <div class="col-7"><h3>Cashier's Console'</h3></div>
+        <div class="col-2"><label for="cashier">Cashier Name:</label></div>
+        <div class="col-3">@*Display Cashier name here*@</div>
+    </div>
+}
+
+<br />
+
+<div class="row">    
+    <div class="col-4">
+        <div class="row mb-5">
+            <div class="col">
+                @* Category seclection *@
+                <select asp-for="@Model.SelectedCategoryId" class="form-select">
+                    <option value="">Select Category</option>
+                    @if (Model.Categories is not null)
+                    {
+                        foreach (var category in Model.Categories)
+                        {
+                            <option value="@category.Id">@category.Name</option>
+                        }
+                    }
+                </select>
+            </div>            
+        </div>
+
+        <div class="row mb-5">
+            <div class="col" id="productsPartialView">
+                @*Product List*@
+            </div>            
+        </div>
+
+        <div class="row mb-5">
+            <div class="col">
+                @*Product Details*@
+            </div>            
+        </div>
+
+        <div class="row mb-5">
+            <div class="col">
+                @*Sales form*@
+            </div>
+        </div>
+    </div>
+
+    <div class="col">
+    
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        // handle category selection
+        $(function () {
+            
+            $("#SelectedCategoryId").on("change", function () {
+                if ($(this).val() > 0) {
+                    $("#productsPartialView").load("/products/ProductsByCategoryPartial", {categoryId: $(this).val()});
+                }
+                else
+                {
+                    // Clear the productsPartialView div and show a message
+                    $("#productsPartialView").html("<div class='text-muted'>Please select product category.</div>");
+                }
+            });            
+        });
+    </script>
+}

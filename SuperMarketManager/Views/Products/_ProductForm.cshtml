@@ -18,7 +18,7 @@
             <label asp-for="Product.Category" class="col-form-label"></label>
         </div>
         <div class="col-6">
-            <select asp-for="Product.CategoryId" class="form-control">
+            <select asp-for="Product.CategoryId" class="form-select">
                 <option value="">Select Category</option>
 
                 @if (Model.Categories is not null)
