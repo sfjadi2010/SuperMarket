@@ -24,4 +24,38 @@ public class SalesController : Controller
         }
         return PartialView("_SellProduct", product);
     }
+
+    [HttpPost]
+    public IActionResult SellProduct(SalesViewModel salesViewModel)
+    {
+        var product = ProductsRepository.GetProductById(salesViewModel.SelectedProductId);
+        salesViewModel.SelectedCategoryId = (product?.CategoryId is not null) ? product.CategoryId.Value : 0;
+        salesViewModel.Categories = CategoriesRepository.GetCategories();
+
+        if (ModelState.IsValid)
+        {
+            if (product is not null)
+            {
+                int beforeQty = product.Quantity ?? 0;
+                int afterQty = Math.Max(0, beforeQty - salesViewModel.QuantityToSell);
+
+                var transaction = new Transaction
+                {
+                    CashirName = "Cashier-1",
+                    ProductId = product.Id,
+                    ProductName = product.Name ?? string.Empty,
+                    Price = product.Price,
+                    BeforeQty = beforeQty,
+                    AfterQty = afterQty
+                };
+
+                TransactionsRepository.Add(transaction);
+
+                product.Quantity -= salesViewModel.QuantityToSell;
+                ProductsRepository.UpdateProduct(salesViewModel.SelectedProductId, product);
+            }
+        }
+
+        return View(nameof(Index), salesViewModel);
+    }
 }
