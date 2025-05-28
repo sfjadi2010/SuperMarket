@@ -9,5 +9,6 @@ public class Transaction
     public double? Price { get; set; }
     public int? BeforeQty { get; set; }
     public int? AfterQty { get; set; }
-    public string CashirName { get; set; } = default!;
+    public int? SoldQty { get; set; }
+    public string CashierName { get; set; } = default!;
 }

@@ -4,3 +4,19 @@
 tr.highlight > td {
     background-color: yellow;
 }
+
+@media print {
+    body * {
+        visibility: hidden;
+    }
+
+    #printarea, #printarea * {
+        visibility: visible;
+    }
+
+    #printarea {
+        position: absolute;
+        left: 0px;
+        top: 0px;
+    }
+}

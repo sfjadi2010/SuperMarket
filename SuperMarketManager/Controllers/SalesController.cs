@@ -38,15 +38,17 @@ public class SalesController : Controller
             {
                 int beforeQty = product.Quantity ?? 0;
                 int afterQty = Math.Max(0, beforeQty - salesViewModel.QuantityToSell);
+                int soldQty = salesViewModel.QuantityToSell;
 
                 var transaction = new Transaction
                 {
-                    CashirName = "Cashier-1",
+                    CashierName = "Cashier-1",
                     ProductId = product.Id,
                     ProductName = product.Name ?? string.Empty,
                     Price = product.Price,
                     BeforeQty = beforeQty,
-                    AfterQty = afterQty
+                    AfterQty = afterQty,
+                    SoldQty = soldQty
                 };
 
                 TransactionsRepository.Add(transaction);

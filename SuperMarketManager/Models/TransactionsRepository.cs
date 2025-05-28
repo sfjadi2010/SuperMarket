@@ -7,6 +7,14 @@ public class TransactionsRepository
     {
         return _transactions;
     }
+
+    public static IEnumerable<Transaction> GetByDayAndCashier(string username, DateTime dateTime)
+    {
+        // Compare only the Date part
+        var transactions = _transactions.Where(t => t.CashierName == username && t.TimeStamp.Date == dateTime.Date).ToList();
+        return transactions;
+    }
+
     public static void Add(Transaction transaction)
     {
         if (transaction is not null)
@@ -19,5 +27,13 @@ public class TransactionsRepository
     public static void Clear()
     {
         _transactions.Clear();
+    }
+
+    internal static IEnumerable<Transaction> Search(string username, DateTime startDate, DateTime endDate)
+    {
+        // Compare only the Date part for the range
+        return _transactions
+            .Where(t => t.CashierName == username && t.TimeStamp.Date >= startDate.Date && t.TimeStamp.Date <= endDate.Date)
+            .ToList();
     }
 }
