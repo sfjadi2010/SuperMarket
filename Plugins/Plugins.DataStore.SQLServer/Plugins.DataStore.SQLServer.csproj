@@ -21,6 +21,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\SuperMarketManager.CoreBusiness\SuperMarketManager.CoreBusiness.csproj" />
+    <ProjectReference Include="..\..\SuperMarketManager.UseCases\SuperMarketManager.UseCases.csproj" />
   </ItemGroup>
 
 </Project>

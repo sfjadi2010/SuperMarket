@@ -3,9 +3,9 @@
 namespace SuperMarketManager.UseCases.DataStorePluginInterfaces;
 public interface ICategoryRepository
 {
-    void AddCategory(Category category);
-    void DeleteCategory(int categoryId);
-    IEnumerable<Category> GetCategories();
-    Category? GetCategoryById(int categoryId);
-    void UpdateCategory(int categoryId, Category category);
+    Task AddCategoryAsync(Category category);
+    Task DeleteCategoryAsync(int categoryId);
+    Task<IEnumerable<Category>> GetCategoriesAsync();
+    Task<Category?> GetCategoryByIdAsync(int categoryId);
+    Task UpdateCategoryAsync(int categoryId, Category category);
 }

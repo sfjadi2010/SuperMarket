@@ -10,7 +10,7 @@ public class AddCategoryUseCase : IAddCategoryUseCase
     {
         _categoryRepository = categoryRepository;
     }
-    public void Execute(Category category)
+    public async Task Execute(Category category)
     {
         if (category == null)
         {
@@ -20,6 +20,6 @@ public class AddCategoryUseCase : IAddCategoryUseCase
         {
             throw new ArgumentException("Category name cannot be empty.", nameof(category.Name));
         }
-        _categoryRepository.AddCategory(category);
+        await _categoryRepository.AddCategoryAsync(category);
     }
 }

@@ -3,5 +3,5 @@
 namespace SuperMarketManager.UseCases.CategoryUseCases.Interfaces;
 public interface IViewCategoriesUseCase
 {
-    IEnumerable<Category> Execute();
+    Task<IEnumerable<Category>> Execute();
 }

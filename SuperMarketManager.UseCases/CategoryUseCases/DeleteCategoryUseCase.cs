@@ -9,12 +9,12 @@ public class DeleteCategoryUseCase : IDeleteCategoryUseCase
     {
         _categoryRepository = categoryRepository;
     }
-    public void Execute(int categoryId)
+    public async Task Execute(int categoryId)
     {
         if (categoryId <= 0)
         {
             throw new ArgumentException("Category ID must be greater than zero.", nameof(categoryId));
         }
-        _categoryRepository.DeleteCategory(categoryId);
+        await _categoryRepository.DeleteCategoryAsync(categoryId);
     }
 }

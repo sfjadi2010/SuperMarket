@@ -12,8 +12,8 @@ public class EditCategoryUseCase : IEditCategoryUseCase
         _categoryRepository = categoryRepository;
     }
 
-    public void Execute(int categoryId, Category category)
+    public async Task Execute(int categoryId, Category category)
     {
-        _categoryRepository.UpdateCategory(categoryId, category);
+        await _categoryRepository.UpdateCategoryAsync(categoryId, category);
     }
 }

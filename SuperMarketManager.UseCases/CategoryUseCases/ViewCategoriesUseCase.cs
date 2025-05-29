@@ -13,9 +13,9 @@ namespace SuperMarketManager.UseCases.CategoryUseCases
             _categoryRepository = categoryRepository;
         }
 
-        public IEnumerable<Category> Execute()
+        public async Task<IEnumerable<Category>> Execute()
         {
-            return _categoryRepository.GetCategories() ?? Enumerable.Empty<Category>();
+            return await _categoryRepository.GetCategoriesAsync() ?? Enumerable.Empty<Category>();
         }
     }
 }

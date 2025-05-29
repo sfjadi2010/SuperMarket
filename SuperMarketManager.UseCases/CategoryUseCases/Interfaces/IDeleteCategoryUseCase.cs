@@ -2,5 +2,5 @@
 
 public interface IDeleteCategoryUseCase
 {
-    void Execute(int categoryId);
+    Task Execute(int categoryId);
 }

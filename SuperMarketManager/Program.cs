@@ -14,7 +14,15 @@ builder.Services.AddDbContext<MarketDbContext>(options =>
 builder.Services.AddControllersWithViews();
 
 // Categories Use Cases
-builder.Services.AddSingleton<ICategoryRepository, CategoriesInMemoryRepository>();
+if (builder.Environment.IsEnvironment("QA"))
+{
+    builder.Services.AddSingleton<ICategoryRepository, CategoriesInMemoryRepository>();
+}
+else
+{
+    builder.Services.AddSingleton<ICategoryRepository, CategoriesSQLRepository>();
+}
+
 builder.Services.AddTransient<IViewCategoriesUseCase, ViewCategoriesUseCase>();
 builder.Services.AddTransient<IViewSelectedCategoryUseCase, ViewSelectedCategoryUseCase>();
 builder.Services.AddTransient<IAddCategoryUseCase, AddCategoryUseCase>();
