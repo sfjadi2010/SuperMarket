@@ -1,4 +1,6 @@
-﻿namespace SuperMarketManager.Models;
+﻿using SuperMarketManager.CoreBusiness;
+
+namespace SuperMarketManager.Models;
 
 public static class ProductsRepository
 {
@@ -23,7 +25,7 @@ public static class ProductsRepository
         {
             _products.ForEach(product =>
             {
-                product.Category = CategoriesRepository.GetCategoryById(product.CategoryId ?? 0);
+                //product.Category = CategoriesRepository.GetCategoryById(product.CategoryId ?? 0);
             });
         }
 

@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using SuperMarketManager.CoreBusiness;
 using SuperMarketManager.Models;
 using SuperMarketManager.ViewModels;
 
@@ -9,7 +10,7 @@ public class SalesController : Controller
     {
         var salesViewModel = new SalesViewModel
         {
-            Categories = CategoriesRepository.GetCategories()
+            //Categories = CategoriesRepository.GetCategories()
         };
 
         return View(salesViewModel);
@@ -30,7 +31,7 @@ public class SalesController : Controller
     {
         var product = ProductsRepository.GetProductById(salesViewModel.SelectedProductId);
         salesViewModel.SelectedCategoryId = (product?.CategoryId is not null) ? product.CategoryId.Value : 0;
-        salesViewModel.Categories = CategoriesRepository.GetCategories();
+        //salesViewModel.Categories = CategoriesRepository.GetCategories();
 
         if (ModelState.IsValid)
         {

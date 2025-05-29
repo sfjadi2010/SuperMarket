@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace SuperMarketManager.Models;
+namespace SuperMarketManager.CoreBusiness;
 
 public class Product
 {

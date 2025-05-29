@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace SuperMarketManager.Models;
+namespace SuperMarketManager.CoreBusiness;
 
 public class Category
 {
@@ -8,4 +8,7 @@ public class Category
     [Required]
     public string Name { get; set; } = default!;
     public string? Description { get; set; } = default!;
+
+    // navigation property for related products
+    public List<Product> Products { get; set; } = new List<Product>();
 }

@@ -1,4 +1,4 @@
-﻿using SuperMarketManager.Models;
+﻿using SuperMarketManager.CoreBusiness;
 
 namespace SuperMarketManager.ViewModels;
 

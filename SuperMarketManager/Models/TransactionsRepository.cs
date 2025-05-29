@@ -1,4 +1,6 @@
-﻿namespace SuperMarketManager.Models;
+﻿using SuperMarketManager.CoreBusiness;
+
+namespace SuperMarketManager.Models;
 
 public class TransactionsRepository
 {

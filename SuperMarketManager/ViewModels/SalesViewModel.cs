@@ -1,4 +1,4 @@
-﻿using SuperMarketManager.Models;
+﻿using SuperMarketManager.CoreBusiness;
 using SuperMarketManager.ViewModels.Validations;
 using System.ComponentModel.DataAnnotations;
 

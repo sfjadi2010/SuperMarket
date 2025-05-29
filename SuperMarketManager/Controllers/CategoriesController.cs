@@ -1,20 +1,45 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using SuperMarketManager.Models;
+using SuperMarketManager.CoreBusiness;
+using SuperMarketManager.UseCases.CategoryUseCases.Interfaces;
+using SuperMarketManager.UseCases.DataStorePluginInterfaces;
 
 namespace SuperMarketManager.Controllers
 {
     public class CategoriesController : Controller
     {
+        private readonly ICategoryRepository _categoryRepository;
+        private readonly IViewCategoriesUseCase _viewCategoriesUseCase;
+        private readonly IViewSelectedCategoryUseCase _viewSelectedCategoryUseCase;
+        private readonly IAddCategoryUseCase _addCategoryUseCase;
+        private readonly IEditCategoryUseCase _editCategoryUseCase;
+        private readonly IDeleteCategoryUseCase _deleteCategoryUseCase;
+
+        public CategoriesController(
+            ICategoryRepository categoryRepository,
+            IViewCategoriesUseCase viewCategoriesUseCase,
+            IViewSelectedCategoryUseCase viewSelectedCategoryUseCase,
+            IAddCategoryUseCase addCategoryUseCase,
+            IEditCategoryUseCase editCategoryUseCase,
+            IDeleteCategoryUseCase deleteCategoryUseCase)
+        {
+            _categoryRepository = categoryRepository;
+            _viewCategoriesUseCase = viewCategoriesUseCase;
+            _viewSelectedCategoryUseCase = viewSelectedCategoryUseCase;
+            _addCategoryUseCase = addCategoryUseCase;
+            _editCategoryUseCase = editCategoryUseCase;
+            _deleteCategoryUseCase = deleteCategoryUseCase;
+        }
+
         public IActionResult Index()
         {
-            var categories = CategoriesRepository.GetCategories();
+            var categories = _viewCategoriesUseCase.Execute();
             return View(categories);
         }
         public IActionResult Create()
         {
             ViewBag.Action = "create";
-            var category = new Category();
-            return View(category);
+
+            return View();
         }
 
         [HttpPost]
@@ -22,7 +47,7 @@ namespace SuperMarketManager.Controllers
         {
             if (ModelState.IsValid)
             {
-                CategoriesRepository.AddCategory(category);
+                _addCategoryUseCase.Execute(category);
                 return RedirectToAction(nameof(Index));
             }
             return View(category);
@@ -31,7 +56,7 @@ namespace SuperMarketManager.Controllers
         public IActionResult Edit([FromRoute] int? id)
         {
             ViewBag.Action = "edit";
-            var category = CategoriesRepository.GetCategoryById(id ?? 0);
+            var category = _viewSelectedCategoryUseCase.Execute(id ?? 0);
 
             return View(category);
         }
@@ -41,7 +66,7 @@ namespace SuperMarketManager.Controllers
         {
             if (ModelState.IsValid)
             {
-                CategoriesRepository.UpdateCategory(category);
+                _editCategoryUseCase.Execute(category.Id, category);
 
                 return RedirectToAction(nameof(Index));
             }
@@ -50,7 +75,7 @@ namespace SuperMarketManager.Controllers
 
         public IActionResult Delete(int? id)
         {
-            CategoriesRepository.DeleteCategory(id ?? 0);
+            _deleteCategoryUseCase.Execute(id ?? 0);
             return RedirectToAction(nameof(Index));
         }
     }

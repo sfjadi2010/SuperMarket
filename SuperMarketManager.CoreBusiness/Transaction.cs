@@ -1,4 +1,4 @@
-﻿namespace SuperMarketManager.Models;
+﻿namespace SuperMarketManager.CoreBusiness;
 
 public class Transaction
 {

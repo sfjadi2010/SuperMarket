@@ -16,7 +16,7 @@ public class ProductsController : Controller
     {
         ViewBag.Action = "create";
         var productViewModel = new ProductViewModel();
-        productViewModel.Categories = CategoriesRepository.GetCategories();
+        //productViewModel.Categories = CategoriesRepository.GetCategories();
         return View(productViewModel);
     }
 
@@ -29,7 +29,7 @@ public class ProductsController : Controller
             return RedirectToAction(nameof(Index));
         }
 
-        productViewModel.Categories = CategoriesRepository.GetCategories();
+        //productViewModel.Categories = CategoriesRepository.GetCategories();
 
         return View(productViewModel);
     }
@@ -46,7 +46,7 @@ public class ProductsController : Controller
         var productViewModel = new ProductViewModel
         {
             Product = product,
-            Categories = CategoriesRepository.GetCategories()
+            //Categories = CategoriesRepository.GetCategories()
         };
 
         return View(productViewModel);
@@ -61,7 +61,7 @@ public class ProductsController : Controller
             return RedirectToAction(nameof(Index));
         }
 
-        productViewModel.Categories = CategoriesRepository.GetCategories();
+        //productViewModel.Categories = CategoriesRepository.GetCategories();
         return View(productViewModel);
     }
 
