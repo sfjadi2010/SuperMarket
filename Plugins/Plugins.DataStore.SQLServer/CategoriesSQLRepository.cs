@@ -17,6 +17,7 @@ public class CategoriesSQLRepository : ICategoryRepository
         ArgumentNullException.ThrowIfNull(category, nameof(category));
 
         await _marketDbContext.Categories.AddAsync(category);
+        await _marketDbContext.SaveChangesAsync();
     }
 
     public async Task DeleteCategoryAsync(int categoryId)

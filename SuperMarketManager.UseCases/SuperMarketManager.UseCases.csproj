@@ -10,4 +10,8 @@
     <ProjectReference Include="..\SuperMarketManager.CoreBusiness\SuperMarketManager.CoreBusiness.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="TransactionUseCases\" />
+  </ItemGroup>
+
 </Project>

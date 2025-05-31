@@ -1,8 +1,8 @@
 ﻿using SuperMarketManager.CoreBusiness;
 using SuperMarketManager.UseCases.DataStorePluginInterfaces;
 
-namespace Plugins.DataStore.InMemory;
-public class TransactionsInMemoryRepository : ITransactionRepository
+namespace Plugins.DataStore.SQLServer;
+public class TransactionSQLRepository : ITransactionRepository
 {
     public Task AddAsync(string cashierName, int productId, string productName, double price, int beforeQty, int soldQty)
     {

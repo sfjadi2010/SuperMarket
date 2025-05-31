@@ -1,13 +1,11 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using SuperMarketManager.CoreBusiness;
 using SuperMarketManager.UseCases.CategoryUseCases.Interfaces;
-using SuperMarketManager.UseCases.DataStorePluginInterfaces;
 
 namespace SuperMarketManager.Controllers
 {
     public class CategoriesController : Controller
     {
-        private readonly ICategoryRepository _categoryRepository;
         private readonly IViewCategoriesUseCase _viewCategoriesUseCase;
         private readonly IViewSelectedCategoryUseCase _viewSelectedCategoryUseCase;
         private readonly IAddCategoryUseCase _addCategoryUseCase;
@@ -15,14 +13,12 @@ namespace SuperMarketManager.Controllers
         private readonly IDeleteCategoryUseCase _deleteCategoryUseCase;
 
         public CategoriesController(
-            ICategoryRepository categoryRepository,
             IViewCategoriesUseCase viewCategoriesUseCase,
             IViewSelectedCategoryUseCase viewSelectedCategoryUseCase,
             IAddCategoryUseCase addCategoryUseCase,
             IEditCategoryUseCase editCategoryUseCase,
             IDeleteCategoryUseCase deleteCategoryUseCase)
         {
-            _categoryRepository = categoryRepository;
             _viewCategoriesUseCase = viewCategoriesUseCase;
             _viewSelectedCategoryUseCase = viewSelectedCategoryUseCase;
             _addCategoryUseCase = addCategoryUseCase;
@@ -30,9 +26,9 @@ namespace SuperMarketManager.Controllers
             _deleteCategoryUseCase = deleteCategoryUseCase;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            var categories = _viewCategoriesUseCase.Execute();
+            var categories = await _viewCategoriesUseCase.Execute();
             return View(categories);
         }
         public IActionResult Create()
@@ -43,39 +39,39 @@ namespace SuperMarketManager.Controllers
         }
 
         [HttpPost]
-        public IActionResult Create(Category category)
+        public async Task<IActionResult> Create(Category category)
         {
             if (ModelState.IsValid)
             {
-                _addCategoryUseCase.Execute(category);
+                await _addCategoryUseCase.Execute(category);
                 return RedirectToAction(nameof(Index));
             }
             return View(category);
         }
 
-        public IActionResult Edit([FromRoute] int? id)
+        public async Task<IActionResult> Edit([FromRoute] int? id)
         {
             ViewBag.Action = "edit";
-            var category = _viewSelectedCategoryUseCase.Execute(id ?? 0);
+            var category = await _viewSelectedCategoryUseCase.Execute(id ?? 0);
 
             return View(category);
         }
 
         [HttpPost]
-        public IActionResult Edit(Category category)
+        public async Task<IActionResult> Edit(Category category)
         {
             if (ModelState.IsValid)
             {
-                _editCategoryUseCase.Execute(category.Id, category);
+                await _editCategoryUseCase.Execute(category.Id, category);
 
                 return RedirectToAction(nameof(Index));
             }
             return View(category);
         }
 
-        public IActionResult Delete(int? id)
+        public async Task<IActionResult> Delete(int? id)
         {
-            _deleteCategoryUseCase.Execute(id ?? 0);
+            await _deleteCategoryUseCase.Execute(id ?? 0);
             return RedirectToAction(nameof(Index));
         }
     }

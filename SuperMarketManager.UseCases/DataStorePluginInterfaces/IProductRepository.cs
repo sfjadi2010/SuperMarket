@@ -3,10 +3,10 @@
 namespace SuperMarketManager.UseCases.DataStorePluginInterfaces;
 public interface IProductRepository
 {
-    IEnumerable<Product> GetProducts(bool loadCategory = false);
-    void AddProduct(Product product);
-    void UpdateProduct(int productId, Product product);
-    Product? GetProductById(int productId, bool loadCategory = false);
-    void DeleteProduct(int productId);
-    IEnumerable<Product> GetProductsByCategoryId(int categoryId);
+    Task<IEnumerable<Product>> GetProductsAsync(bool loadCategory = false);
+    Task AddProductAsync(Product product);
+    Task UpdateProductAsync(int productId, Product product);
+    Task<Product?> GetProductByIdAsync(int productId, bool loadCategory = false);
+    Task DeleteProductAsync(int productId);
+    Task<IEnumerable<Product>> GetProductsByCategoryIdAsync(int categoryId);
 }

@@ -3,7 +3,7 @@
 namespace SuperMarketManager.UseCases.DataStorePluginInterfaces;
 public interface ITransactionRepository
 {
-    public IEnumerable<Transaction> GetByDayAndCashier(string cashierName, DateTime date);
-    public IEnumerable<Transaction> Search(string cashierName, DateTime startDate, DateTime dateTime);
-    public void Add(string cashierName, int productId, string productName, double price, int beforeQty, int soldQty);
+    Task<IEnumerable<Transaction>> GetByDayAndCashierAsync(string cashierName, DateTime date);
+    Task<IEnumerable<Transaction>> SearchAsync(string cashierName, DateTime startDate, DateTime dateTime);
+    Task AddAsync(string cashierName, int productId, string productName, double price, int beforeQty, int soldQty);
 }

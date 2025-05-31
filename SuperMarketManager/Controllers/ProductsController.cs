@@ -1,43 +1,75 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using SuperMarketManager.Models;
+using SuperMarketManager.UseCases.CategoryUseCases.Interfaces;
+using SuperMarketManager.UseCases.ProductUseCases.Interfaces;
 using SuperMarketManager.ViewModels;
 
 namespace SuperMarketManager.Controllers;
 public class ProductsController : Controller
 {
-    public IActionResult Index()
+    private readonly IViewProductsUseCase _viewProductsUseCase;
+    private readonly IViewSelectedProductUseCase _viewSelectedProductUseCase;
+    private readonly IViewProductsByCategoryIdUseCase _viewProductsByCategoryIdUseCase;
+    private readonly IAddProductUseCase _addProductUseCase;
+    private readonly IEditProductUseCase _editProductUseCase;
+    private readonly IDeleteProductUseCase _deleteProductUseCase;
+
+    private readonly IViewCategoriesUseCase _viewCategoriesUseCase;
+
+    public ProductsController(
+        IViewProductsUseCase viewProductsUseCase,
+        IViewSelectedProductUseCase viewSelectedProductUseCase,
+        IViewProductsByCategoryIdUseCase viewProductsByCategoryIdUseCase,
+        IAddProductUseCase addProductUseCase,
+        IEditProductUseCase editProductUseCase,
+        IDeleteProductUseCase deleteProductUseCase,
+        IViewCategoriesUseCase viewCategoriesUseCase)
     {
-        var products = ProductsRepository.GetProducts(true);
+        _viewProductsUseCase = viewProductsUseCase;
+        _viewSelectedProductUseCase = viewSelectedProductUseCase;
+        _viewProductsByCategoryIdUseCase = viewProductsByCategoryIdUseCase;
+        _addProductUseCase = addProductUseCase;
+        _editProductUseCase = editProductUseCase;
+        _deleteProductUseCase = deleteProductUseCase;
+        _viewCategoriesUseCase = viewCategoriesUseCase;
+    }
+
+    public async Task<IActionResult> Index()
+    {
+        var products = await _viewProductsUseCase.Execute(true);
 
         return View(products);
     }
 
-    public IActionResult Create()
+    public async Task<IActionResult> Create()
     {
         ViewBag.Action = "create";
         var productViewModel = new ProductViewModel();
-        //productViewModel.Categories = CategoriesRepository.GetCategories();
+        var categories = await _viewCategoriesUseCase.Execute();
+        productViewModel.Categories = categories.ToList();
         return View(productViewModel);
     }
 
     [HttpPost]
-    public IActionResult Create(ProductViewModel productViewModel)
+    public async Task<IActionResult> Create(ProductViewModel productViewModel)
     {
         if (ModelState.IsValid)
         {
-            ProductsRepository.AddProduct(productViewModel.Product);
+            await _addProductUseCase.Execute(productViewModel.Product);
             return RedirectToAction(nameof(Index));
         }
-
-        //productViewModel.Categories = CategoriesRepository.GetCategories();
 
         return View(productViewModel);
     }
 
-    public IActionResult Edit(int? id)
+    public async Task<IActionResult> Edit(int? id)
     {
+        ArgumentNullException.ThrowIfNull(id, nameof(id));
+
         ViewBag.Action = "edit";
-        var product = ProductsRepository.GetProductById(id ?? 0);
+
+        var product = await _viewSelectedProductUseCase.Execute(id.Value);
+        var categories = await _viewCategoriesUseCase.Execute();
+
         if (product is null)
         {
             return NotFound();
@@ -46,34 +78,34 @@ public class ProductsController : Controller
         var productViewModel = new ProductViewModel
         {
             Product = product,
-            //Categories = CategoriesRepository.GetCategories()
+            Categories = categories.ToList()
         };
 
         return View(productViewModel);
     }
 
     [HttpPost]
-    public IActionResult Edit(ProductViewModel productViewModel)
+    public async Task<IActionResult> Edit(ProductViewModel productViewModel)
     {
         if (ModelState.IsValid)
         {
-            ProductsRepository.UpdateProduct(productViewModel.Product.Id, productViewModel.Product);
+            await _editProductUseCase.Execute(productViewModel.Product.Id, productViewModel.Product);
+
             return RedirectToAction(nameof(Index));
         }
 
-        //productViewModel.Categories = CategoriesRepository.GetCategories();
         return View(productViewModel);
     }
 
-    public IActionResult Delete(int? id)
+    public async Task<IActionResult> Delete(int? id)
     {
-        ProductsRepository.DeleteProduct(id ?? 0);
+        await _deleteProductUseCase.Execute(id ?? 0);
         return RedirectToAction(nameof(Index));
     }
 
-    public IActionResult ProductsByCategoryPartial(int categoryId)
+    public async Task<IActionResult> ProductsByCategoryPartial(int categoryId)
     {
-        var products = ProductsRepository.GetProductsByCategoryId(categoryId);
+        var products = await _viewProductsByCategoryIdUseCase.Execute(categoryId);
 
         return PartialView("_Products", products);
     }
