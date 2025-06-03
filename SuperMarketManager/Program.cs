@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Plugins.DataStore.InMemory;
 using Plugins.DataStore.SQLServer;
@@ -6,6 +7,9 @@ using SuperMarketManager.UseCases.CategoryUseCases.Interfaces;
 using SuperMarketManager.UseCases.DataStorePluginInterfaces;
 using SuperMarketManager.UseCases.ProductUseCases;
 using SuperMarketManager.UseCases.ProductUseCases.Interfaces;
+using SuperMarketManager.UseCases.TransactionUseCases;
+using SuperMarketManager.UseCases.TransactionUseCases.Interfaces;
+using SuperMarketManager.Web.Data;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddDbContext<MarketDbContext>(options =>
@@ -13,6 +17,14 @@ builder.Services.AddDbContext<MarketDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
 });
 
+builder.Services.AddDbContext<AccountContext>(options =>
+{
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
+});
+
+builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true).AddEntityFrameworkStores<AccountContext>();
+
+builder.Services.AddRazorPages();
 builder.Services.AddControllersWithViews();
 
 // Categories Use Cases
@@ -50,11 +62,20 @@ builder.Services.AddTransient<IDeleteProductUseCase, DeleteProductUseCase>();
 
 #endregion
 
+#region Transactions Services
+builder.Services.AddTransient<IAddTransactionUseCase, AddTransactionUseCase>();
+builder.Services.AddTransient<IViewTransactionByDayCashierUseCase, ViewTransactionByDayCashierUseCase>();
+builder.Services.AddTransient<IViewSearchUseCase, ViewSearchUseCase>();
+#endregion
+
 var app = builder.Build();
 
 app.UseStaticFiles();
 
 app.UseRouting();
+
+app.UseAuthentication();
+app.UseAuthorization();
 
 app.MapControllerRoute(
     name: "default",

@@ -1,11 +1,16 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using SuperMarketManager.CoreBusiness;
 using SuperMarketManager.Models;
+using SuperMarketManager.UseCases.CategoryUseCases.Interfaces;
+using SuperMarketManager.UseCases.ProductUseCases.Interfaces;
 using SuperMarketManager.ViewModels;
 
 namespace SuperMarketManager.Controllers;
 public class SalesController : Controller
 {
+    private readonly IViewCategoriesUseCase _viewCategoriesUseCase;
+    private readonly IViewSelectedProductUseCase _viewSelectedProductUseCase;
+
     public IActionResult Index()
     {
         var salesViewModel = new SalesViewModel

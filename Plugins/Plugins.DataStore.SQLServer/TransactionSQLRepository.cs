@@ -1,21 +1,60 @@
-﻿using SuperMarketManager.CoreBusiness;
+﻿using Microsoft.EntityFrameworkCore;
+using SuperMarketManager.CoreBusiness;
 using SuperMarketManager.UseCases.DataStorePluginInterfaces;
 
 namespace Plugins.DataStore.SQLServer;
 public class TransactionSQLRepository : ITransactionRepository
 {
-    public Task AddAsync(string cashierName, int productId, string productName, double price, int beforeQty, int soldQty)
+    private readonly MarketDbContext _marketDbContext;
+
+    public TransactionSQLRepository(MarketDbContext marketDbContext)
     {
-        throw new NotImplementedException();
+        _marketDbContext = marketDbContext;
     }
 
-    public Task<IEnumerable<Transaction>> GetByDayAndCashierAsync(string cashierName, DateTime date)
+    public async Task AddAsync(string cashierName, int productId, string productName, double price, int beforeQty, int soldQty)
     {
-        throw new NotImplementedException();
+        var transaction = new Transaction()
+        {
+            TimeStamp = DateTime.Now,
+            CashierName = cashierName,
+            ProductId = productId,
+            ProductName = productName,
+            Price = price,
+            BeforeQty = beforeQty,
+            SoldQty = soldQty
+        };
+
+        _marketDbContext.Transactions.Add(transaction);
+        await _marketDbContext.SaveChangesAsync();
     }
 
-    public Task<IEnumerable<Transaction>> SearchAsync(string cashierName, DateTime startDate, DateTime dateTime)
+    public async Task<IEnumerable<Transaction>> GetByDayAndCashierAsync(string cashierName, DateTime date)
     {
-        throw new NotImplementedException();
+        var query = BuildCashierNameQuery(cashierName);
+
+        query = query.Where(t => t.TimeStamp.Date == date.Date);
+
+        return await query.ToListAsync();
+    }
+
+    public async Task<IEnumerable<Transaction>> SearchAsync(string cashierName, DateTime startDate, DateTime endDate)
+    {
+        var query = BuildCashierNameQuery(cashierName);
+
+        query = query.Where(t => t.TimeStamp >= startDate && t.TimeStamp <= endDate);
+
+        return await query.ToListAsync();
+    }
+
+    private IQueryable<Transaction> BuildCashierNameQuery(string cashierName)
+    {
+        var query = _marketDbContext.Transactions.AsNoTracking().AsQueryable();
+        if (!string.IsNullOrWhiteSpace(cashierName))
+        {
+            query = query.Where(t => t.CashierName == cashierName);
+        }
+
+        return query;
     }
 }

@@ -5,7 +5,7 @@ namespace Plugins.DataStore.SQLServer;
 
 public class MarketDbContext : DbContext
 {
-    public MarketDbContext(DbContextOptions options) : base(options) { }
+    public MarketDbContext(DbContextOptions<MarketDbContext> options) : base(options) { }
 
     public DbSet<Category> Categories { get; set; } = null!;
     public DbSet<Product> Products { get; set; } = null!;
