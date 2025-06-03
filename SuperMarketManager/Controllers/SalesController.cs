@@ -11,6 +11,12 @@ public class SalesController : Controller
     private readonly IViewCategoriesUseCase _viewCategoriesUseCase;
     private readonly IViewSelectedProductUseCase _viewSelectedProductUseCase;
 
+    public SalesController(IViewCategoriesUseCase viewCategoriesUseCase, IViewSelectedProductUseCase viewSelectedProductUseCase)
+    {
+        _viewCategoriesUseCase = viewCategoriesUseCase;
+        _viewSelectedProductUseCase = viewSelectedProductUseCase;
+    }
+
     public IActionResult Index()
     {
         var salesViewModel = new SalesViewModel

@@ -63,9 +63,9 @@ builder.Services.AddTransient<IDeleteProductUseCase, DeleteProductUseCase>();
 #endregion
 
 #region Transactions Services
-builder.Services.AddTransient<IAddTransactionUseCase, AddTransactionUseCase>();
-builder.Services.AddTransient<IViewTransactionByDayCashierUseCase, ViewTransactionByDayCashierUseCase>();
-builder.Services.AddTransient<IViewSearchUseCase, ViewSearchUseCase>();
+builder.Services.AddTransient<IGetTodayTransactionsUseCase, GetTodayTransactionsUseCase>();
+builder.Services.AddTransient<IRecordTransactionUseCase, RecordTransactionUseCase>();
+builder.Services.AddTransient<ISearchTransactionUseCase, SearchTransactionUseCase>();
 #endregion
 
 var app = builder.Build();
