@@ -12,7 +12,7 @@ public class ViewProductsByCategoryIdUseCase : IViewProductsByCategoryIdUseCase
         _productRepository = productRepository;
     }
 
-    public async Task<IEnumerable<Product>> Execute(int? categoryId)
+    public async Task<IEnumerable<Product>> ExecuteAsync(int? categoryId)
     {
         return await _productRepository.GetProductsByCategoryIdAsync(categoryId ?? 0);
     }

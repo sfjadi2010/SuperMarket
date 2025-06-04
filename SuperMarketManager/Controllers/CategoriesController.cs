@@ -28,7 +28,7 @@ namespace SuperMarketManager.Controllers
 
         public async Task<IActionResult> Index()
         {
-            var categories = await _viewCategoriesUseCase.Execute();
+            var categories = await _viewCategoriesUseCase.ExecuteAsync();
             return View(categories);
         }
         public IActionResult Create()
@@ -43,7 +43,7 @@ namespace SuperMarketManager.Controllers
         {
             if (ModelState.IsValid)
             {
-                await _addCategoryUseCase.Execute(category);
+                await _addCategoryUseCase.ExecuteAsync(category);
                 return RedirectToAction(nameof(Index));
             }
             return View(category);
@@ -52,7 +52,7 @@ namespace SuperMarketManager.Controllers
         public async Task<IActionResult> Edit([FromRoute] int? id)
         {
             ViewBag.Action = "edit";
-            var category = await _viewSelectedCategoryUseCase.Execute(id ?? 0);
+            var category = await _viewSelectedCategoryUseCase.ExecuteAsync(id ?? 0);
 
             return View(category);
         }
@@ -62,7 +62,7 @@ namespace SuperMarketManager.Controllers
         {
             if (ModelState.IsValid)
             {
-                await _editCategoryUseCase.Execute(category.Id, category);
+                await _editCategoryUseCase.ExecuteAsync(category.Id, category);
 
                 return RedirectToAction(nameof(Index));
             }
@@ -71,7 +71,7 @@ namespace SuperMarketManager.Controllers
 
         public async Task<IActionResult> Delete(int? id)
         {
-            await _deleteCategoryUseCase.Execute(id ?? 0);
+            await _deleteCategoryUseCase.ExecuteAsync(id ?? 0);
             return RedirectToAction(nameof(Index));
         }
     }

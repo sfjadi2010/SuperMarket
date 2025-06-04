@@ -35,7 +35,7 @@ public class ProductsController : Controller
 
     public async Task<IActionResult> Index()
     {
-        var products = await _viewProductsUseCase.Execute(true);
+        var products = await _viewProductsUseCase.ExecuteAsync(true);
 
         return View(products);
     }
@@ -44,7 +44,7 @@ public class ProductsController : Controller
     {
         ViewBag.Action = "create";
         var productViewModel = new ProductViewModel();
-        var categories = await _viewCategoriesUseCase.Execute();
+        var categories = await _viewCategoriesUseCase.ExecuteAsync();
         productViewModel.Categories = categories.ToList();
         return View(productViewModel);
     }
@@ -54,7 +54,7 @@ public class ProductsController : Controller
     {
         if (ModelState.IsValid)
         {
-            await _addProductUseCase.Execute(productViewModel.Product);
+            await _addProductUseCase.ExecuteAsync(productViewModel.Product);
             return RedirectToAction(nameof(Index));
         }
 
@@ -67,8 +67,8 @@ public class ProductsController : Controller
 
         ViewBag.Action = "edit";
 
-        var product = await _viewSelectedProductUseCase.Execute(id.Value);
-        var categories = await _viewCategoriesUseCase.Execute();
+        var product = await _viewSelectedProductUseCase.ExecuteAsync(id.Value);
+        var categories = await _viewCategoriesUseCase.ExecuteAsync();
 
         if (product is null)
         {
@@ -89,7 +89,7 @@ public class ProductsController : Controller
     {
         if (ModelState.IsValid)
         {
-            await _editProductUseCase.Execute(productViewModel.Product.Id, productViewModel.Product);
+            await _editProductUseCase.ExecuteAsync(productViewModel.Product.Id, productViewModel.Product);
 
             return RedirectToAction(nameof(Index));
         }
@@ -99,13 +99,13 @@ public class ProductsController : Controller
 
     public async Task<IActionResult> Delete(int? id)
     {
-        await _deleteProductUseCase.Execute(id ?? 0);
+        await _deleteProductUseCase.ExecuteAsync(id ?? 0);
         return RedirectToAction(nameof(Index));
     }
 
     public async Task<IActionResult> ProductsByCategoryPartial(int categoryId)
     {
-        var products = await _viewProductsByCategoryIdUseCase.Execute(categoryId);
+        var products = await _viewProductsByCategoryIdUseCase.ExecuteAsync(categoryId);
 
         return PartialView("_Products", products);
     }

@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using SuperMarketManager.CoreBusiness;
-using SuperMarketManager.Models;
 using SuperMarketManager.UseCases.CategoryUseCases.Interfaces;
 using SuperMarketManager.UseCases.ProductUseCases.Interfaces;
 using SuperMarketManager.ViewModels;
@@ -10,26 +9,33 @@ public class SalesController : Controller
 {
     private readonly IViewCategoriesUseCase _viewCategoriesUseCase;
     private readonly IViewSelectedProductUseCase _viewSelectedProductUseCase;
+    private readonly ISellProductUseCase _sellProductUseCase;
+    private readonly IViewProductsByCategoryIdUseCase _viewProductsByCategoryIdUseCase;
 
-    public SalesController(IViewCategoriesUseCase viewCategoriesUseCase, IViewSelectedProductUseCase viewSelectedProductUseCase)
+    public SalesController(IViewCategoriesUseCase viewCategoriesUseCase,
+        IViewSelectedProductUseCase viewSelectedProductUseCase,
+        ISellProductUseCase sellProductUseCase,
+        IViewProductsByCategoryIdUseCase viewProductsByCategoryIdUseCase)
     {
         _viewCategoriesUseCase = viewCategoriesUseCase;
         _viewSelectedProductUseCase = viewSelectedProductUseCase;
+        _sellProductUseCase = sellProductUseCase;
+        _viewProductsByCategoryIdUseCase = viewProductsByCategoryIdUseCase;
     }
 
-    public IActionResult Index()
+    public async Task<IActionResult> Index()
     {
         var salesViewModel = new SalesViewModel
         {
-            //Categories = CategoriesRepository.GetCategories()
+            Categories = await _viewCategoriesUseCase.ExecuteAsync(),
         };
 
         return View(salesViewModel);
     }
 
-    public IActionResult SellProductPartial(int productId)
+    public async Task<IActionResult> SellProductPartial(int productId)
     {
-        var product = ProductsRepository.GetProductById(productId);
+        Product? product = await _viewSelectedProductUseCase.ExecuteAsync(productId);
         if (product is null)
         {
             return NotFound();
@@ -38,35 +44,20 @@ public class SalesController : Controller
     }
 
     [HttpPost]
-    public IActionResult SellProduct(SalesViewModel salesViewModel)
+    public async Task<IActionResult> SellProduct(SalesViewModel salesViewModel)
     {
-        var product = ProductsRepository.GetProductById(salesViewModel.SelectedProductId);
+        Product product = await _viewSelectedProductUseCase.ExecuteAsync(salesViewModel.SelectedProductId);
         salesViewModel.SelectedCategoryId = (product?.CategoryId is not null) ? product.CategoryId.Value : 0;
-        //salesViewModel.Categories = CategoriesRepository.GetCategories();
+        salesViewModel.Categories = await _viewCategoriesUseCase.ExecuteAsync();
 
         if (ModelState.IsValid)
         {
             if (product is not null)
             {
-                int beforeQty = product.Quantity ?? 0;
-                int afterQty = Math.Max(0, beforeQty - salesViewModel.QuantityToSell);
-                int soldQty = salesViewModel.QuantityToSell;
-
-                var transaction = new Transaction
-                {
-                    CashierName = "Cashier-1",
-                    ProductId = product.Id,
-                    ProductName = product.Name ?? string.Empty,
-                    Price = product.Price,
-                    BeforeQty = beforeQty,
-                    AfterQty = afterQty,
-                    SoldQty = soldQty
-                };
-
-                TransactionsRepository.Add(transaction);
-
-                product.Quantity -= salesViewModel.QuantityToSell;
-                ProductsRepository.UpdateProduct(salesViewModel.SelectedProductId, product);
+                await _sellProductUseCase.ExecuteAsync(
+                    "cashier-1",
+                    salesViewModel.SelectedProductId,
+                    salesViewModel.QuantityToSell);
             }
         }
 

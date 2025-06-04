@@ -12,7 +12,7 @@ public class ViewSelectedCategoryUseCase : IViewSelectedCategoryUseCase
         _categoryRepository = categoryRepository;
     }
 
-    public async Task<Category?> Execute(int categoryId)
+    public async Task<Category?> ExecuteAsync(int categoryId)
     {
         if (categoryId <= 0)
         {

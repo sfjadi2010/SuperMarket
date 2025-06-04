@@ -11,7 +11,7 @@ public class DeleteProductUseCase : IDeleteProductUseCase
         _productRepository = productRepository;
     }
 
-    public async Task Execute(int productId)
+    public async Task ExecuteAsync(int productId)
     {
         await _productRepository.DeleteProductAsync(productId);
     }

@@ -12,7 +12,7 @@ public class EditCategoryUseCase : IEditCategoryUseCase
         _categoryRepository = categoryRepository;
     }
 
-    public async Task Execute(int categoryId, Category category)
+    public async Task ExecuteAsync(int categoryId, Category category)
     {
         await _categoryRepository.UpdateCategoryAsync(categoryId, category);
     }

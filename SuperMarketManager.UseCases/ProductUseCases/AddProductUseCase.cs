@@ -11,7 +11,7 @@ public class AddProductUseCase : IAddProductUseCase
         _productRepository = productRepository;
     }
 
-    public async Task Execute(Product product)
+    public async Task ExecuteAsync(Product product)
     {
         ArgumentNullException.ThrowIfNull(product, nameof(product));
 

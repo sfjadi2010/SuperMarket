@@ -5,11 +5,11 @@ using SuperMarketManager.ViewModels;
 namespace SuperMarketManager.Controllers;
 public class TransactionsController : Controller
 {
-    private readonly IViewSearchUseCase _viewSearchUseCase;
+    private readonly ISearchTransactionUseCase _searchTransactionUseCase;
 
-    public TransactionsController(IViewSearchUseCase viewSearchUseCase)
+    public TransactionsController(ISearchTransactionUseCase searchTransactionUseCase)
     {
-        _viewSearchUseCase = viewSearchUseCase;
+        _searchTransactionUseCase = searchTransactionUseCase;
     }
 
     public IActionResult Index()
@@ -21,7 +21,7 @@ public class TransactionsController : Controller
 
     public async Task<IActionResult> Search(TransactionsViewModel transactionsViewModel)
     {
-        var transactions = await _viewSearchUseCase.ExecuteAsync(
+        var transactions = await _searchTransactionUseCase.ExecuteAsync(
             transactionsViewModel.CashierName ?? string.Empty,
             transactionsViewModel.StartDate,
             transactionsViewModel.EndDate);

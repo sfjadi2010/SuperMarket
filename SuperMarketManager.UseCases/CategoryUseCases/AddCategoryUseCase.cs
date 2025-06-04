@@ -10,7 +10,7 @@ public class AddCategoryUseCase : IAddCategoryUseCase
     {
         _categoryRepository = categoryRepository;
     }
-    public async Task Execute(Category category)
+    public async Task ExecuteAsync(Category category)
     {
         if (category == null)
         {

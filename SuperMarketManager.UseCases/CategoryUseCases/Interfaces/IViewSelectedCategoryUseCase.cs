@@ -3,5 +3,5 @@
 namespace SuperMarketManager.UseCases.CategoryUseCases.Interfaces;
 public interface IViewSelectedCategoryUseCase
 {
-    Task<Category?> Execute(int categoryId);
+    Task<Category?> ExecuteAsync(int categoryId);
 }

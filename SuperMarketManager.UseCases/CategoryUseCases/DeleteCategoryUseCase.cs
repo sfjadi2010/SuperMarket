@@ -9,7 +9,7 @@ public class DeleteCategoryUseCase : IDeleteCategoryUseCase
     {
         _categoryRepository = categoryRepository;
     }
-    public async Task Execute(int categoryId)
+    public async Task ExecuteAsync(int categoryId)
     {
         if (categoryId <= 0)
         {

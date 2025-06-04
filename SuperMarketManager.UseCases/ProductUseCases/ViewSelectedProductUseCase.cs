@@ -12,7 +12,7 @@ public class ViewSelectedProductUseCase : IViewSelectedProductUseCase
         _productRepository = productRepository;
     }
 
-    public async Task<Product> Execute(int productId)
+    public async Task<Product> ExecuteAsync(int productId)
     {
         var product = await _productRepository.GetProductByIdAsync(productId, true);
 

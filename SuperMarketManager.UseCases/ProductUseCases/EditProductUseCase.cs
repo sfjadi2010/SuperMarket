@@ -12,7 +12,7 @@ public class EditProductUseCase : IEditProductUseCase
         _productRepository = productRepository;
     }
 
-    public async Task Execute(int productId, Product product)
+    public async Task ExecuteAsync(int productId, Product product)
     {
         await _productRepository.UpdateProductAsync(productId, product);
     }

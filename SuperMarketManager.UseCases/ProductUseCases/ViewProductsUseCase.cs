@@ -12,7 +12,7 @@ public class ViewProductsUseCase : IViewProductsUseCase
         _productRepository = productRepository;
     }
 
-    public async Task<IEnumerable<Product>> Execute(bool loadCategories = false)
+    public async Task<IEnumerable<Product>> ExecuteAsync(bool loadCategories = false)
     {
         // Placeholder implementation
         return await _productRepository.GetProductsAsync(loadCategories);

@@ -59,6 +59,7 @@ builder.Services.AddTransient<IViewProductsByCategoryIdUseCase, ViewProductsByCa
 builder.Services.AddTransient<IAddProductUseCase, AddProductUseCase>();
 builder.Services.AddTransient<IEditProductUseCase, EditProductUseCase>();
 builder.Services.AddTransient<IDeleteProductUseCase, DeleteProductUseCase>();
+builder.Services.AddTransient<ISellProductUseCase, SellProductUseCase>();
 
 #endregion
 
