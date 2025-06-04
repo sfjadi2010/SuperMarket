@@ -61,6 +61,11 @@ public class ProductSQLRepository : IProductRepository
 
         if (exitingProduct is null) return;
 
+        exitingProduct.Name = product.Name;
+        exitingProduct.Price = product.Price;
+        exitingProduct.Quantity = product.Quantity;
+        exitingProduct.CategoryId = product.CategoryId;
+
         _marketDbContext.Products.Update(exitingProduct);
         await _marketDbContext.SaveChangesAsync();
     }

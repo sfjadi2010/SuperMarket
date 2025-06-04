@@ -46,20 +46,17 @@ public class SalesController : Controller
     [HttpPost]
     public async Task<IActionResult> SellProduct(SalesViewModel salesViewModel)
     {
+        if (ModelState.IsValid)
+        {
+            await _sellProductUseCase.ExecuteAsync(
+                "cashier-1",
+                salesViewModel.SelectedProductId,
+                salesViewModel.QuantityToSell);
+        }
+
         Product product = await _viewSelectedProductUseCase.ExecuteAsync(salesViewModel.SelectedProductId);
         salesViewModel.SelectedCategoryId = (product?.CategoryId is not null) ? product.CategoryId.Value : 0;
         salesViewModel.Categories = await _viewCategoriesUseCase.ExecuteAsync();
-
-        if (ModelState.IsValid)
-        {
-            if (product is not null)
-            {
-                await _sellProductUseCase.ExecuteAsync(
-                    "cashier-1",
-                    salesViewModel.SelectedProductId,
-                    salesViewModel.QuantityToSell);
-            }
-        }
 
         return View(nameof(Index), salesViewModel);
     }
