@@ -7,7 +7,7 @@ using SuperMarketManager.ViewModels;
 
 namespace SuperMarketManager.Controllers;
 
-[Authorize]
+[Authorize(Policy = "Cashiers")]
 public class SalesController : Controller
 {
     private readonly IViewCategoriesUseCase _viewCategoriesUseCase;

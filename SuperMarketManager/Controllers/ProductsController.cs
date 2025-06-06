@@ -6,7 +6,7 @@ using SuperMarketManager.ViewModels;
 
 namespace SuperMarketManager.Controllers;
 
-[Authorize]
+[Authorize(Policy = "Inventory")]
 public class ProductsController : Controller
 {
     private readonly IViewProductsUseCase _viewProductsUseCase;

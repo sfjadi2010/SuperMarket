@@ -69,6 +69,12 @@ builder.Services.AddTransient<IRecordTransactionUseCase, RecordTransactionUseCas
 builder.Services.AddTransient<ISearchTransactionUseCase, SearchTransactionUseCase>();
 #endregion
 
+builder.Services.AddAuthorization(options =>
+{
+    options.AddPolicy("Inventory", p => p.RequireClaim("Postion", "Inventory"));
+    options.AddPolicy("Cashiers", p => p.RequireClaim("Postion", "Cashier"));
+});
+
 var app = builder.Build();
 
 app.UseStaticFiles();
@@ -78,6 +84,7 @@ app.UseRouting();
 app.UseAuthentication();
 app.UseAuthorization();
 
+app.MapRazorPages();
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}"

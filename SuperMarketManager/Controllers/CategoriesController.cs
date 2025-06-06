@@ -5,7 +5,7 @@ using SuperMarketManager.UseCases.CategoryUseCases.Interfaces;
 
 namespace SuperMarketManager.Controllers;
 
-[Authorize]
+[Authorize(Policy = "Inventory")]
 public class CategoriesController : Controller
 {
     private readonly IViewCategoriesUseCase _viewCategoriesUseCase;
