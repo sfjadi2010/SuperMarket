@@ -63,4 +63,11 @@ public class SalesController : Controller
 
         return View(nameof(Index), salesViewModel);
     }
+
+    public async Task<IActionResult> ProductsByCategoryPartial(int categoryId)
+    {
+        var products = await _viewProductsByCategoryIdUseCase.ExecuteAsync(categoryId);
+
+        return PartialView("_Products", products);
+    }
 }

@@ -103,7 +103,7 @@
 
             function loadProducts(categoryId) {
                 if (categoryId && categoryId > 0) {
-                    $productsPartialView.load("/products/ProductsByCategoryPartial", { categoryId: categoryId }, function () {
+                    $productsPartialView.load("/sales/ProductsByCategoryPartial", { categoryId: categoryId }, function () {
                         // Optionally, clear product details and hide form after loading new products
                         $productsDetailView.empty();
                         $formSale.hide();

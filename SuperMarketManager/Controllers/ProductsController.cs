@@ -11,7 +11,6 @@ public class ProductsController : Controller
 {
     private readonly IViewProductsUseCase _viewProductsUseCase;
     private readonly IViewSelectedProductUseCase _viewSelectedProductUseCase;
-    private readonly IViewProductsByCategoryIdUseCase _viewProductsByCategoryIdUseCase;
     private readonly IAddProductUseCase _addProductUseCase;
     private readonly IEditProductUseCase _editProductUseCase;
     private readonly IDeleteProductUseCase _deleteProductUseCase;
@@ -29,7 +28,6 @@ public class ProductsController : Controller
     {
         _viewProductsUseCase = viewProductsUseCase;
         _viewSelectedProductUseCase = viewSelectedProductUseCase;
-        _viewProductsByCategoryIdUseCase = viewProductsByCategoryIdUseCase;
         _addProductUseCase = addProductUseCase;
         _editProductUseCase = editProductUseCase;
         _deleteProductUseCase = deleteProductUseCase;
@@ -104,12 +102,5 @@ public class ProductsController : Controller
     {
         await _deleteProductUseCase.ExecuteAsync(id ?? 0);
         return RedirectToAction(nameof(Index));
-    }
-
-    public async Task<IActionResult> ProductsByCategoryPartial(int categoryId)
-    {
-        var products = await _viewProductsByCategoryIdUseCase.ExecuteAsync(categoryId);
-
-        return PartialView("_Products", products);
     }
 }

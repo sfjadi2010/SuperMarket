@@ -71,8 +71,8 @@ builder.Services.AddTransient<ISearchTransactionUseCase, SearchTransactionUseCas
 
 builder.Services.AddAuthorization(options =>
 {
-    options.AddPolicy("Inventory", p => p.RequireClaim("Postion", "Inventory"));
-    options.AddPolicy("Cashiers", p => p.RequireClaim("Postion", "Cashier"));
+    options.AddPolicy("Inventory", p => p.RequireClaim("Position", "Inventory"));
+    options.AddPolicy("Cashiers", p => p.RequireClaim("Position", "Cashier"));
 });
 
 var app = builder.Build();
