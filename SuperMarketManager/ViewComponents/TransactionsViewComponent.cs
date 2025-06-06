@@ -1,15 +1,21 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using SuperMarketManager.Models;
+using SuperMarketManager.UseCases.DataStorePluginInterfaces;
 
 namespace SuperMarketManager.ViewComponents;
 
 [ViewComponent]
 public class TransactionsViewComponent : ViewComponent
 {
-    public IViewComponentResult Invoke(string userName)
+    private readonly ITransactionRepository _transactionRepository;
+    public TransactionsViewComponent(ITransactionRepository transactionRepository)
     {
-        var transactions = TransactionsRepository.GetByDayAndCashier(userName, DateTime.Now);
+        _transactionRepository = transactionRepository;
+    }
 
+    public async Task<IViewComponentResult> InvokeAsync(string userName)
+    {
+        var transactions = await _transactionRepository.GetByDayAndCashierAsync(userName, DateTime.Now);
         return View(transactions);
     }
 }
