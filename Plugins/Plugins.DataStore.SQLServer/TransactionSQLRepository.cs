@@ -42,7 +42,7 @@ public class TransactionSQLRepository : ITransactionRepository
     {
         var query = BuildCashierNameQuery(cashierName);
 
-        query = query.Where(t => t.TimeStamp >= startDate && t.TimeStamp <= endDate);
+        query = query.Where(t => t.TimeStamp.Date >= startDate.Date && t.TimeStamp.Date <= endDate.Date);
 
         return await query.ToListAsync();
     }
