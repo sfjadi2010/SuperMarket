@@ -52,7 +52,7 @@ public class SalesController : Controller
         if (ModelState.IsValid)
         {
             await _sellProductUseCase.ExecuteAsync(
-                "cashier-1",
+                User?.Identity?.Name ?? string.Empty,
                 salesViewModel.SelectedProductId,
                 salesViewModel.QuantityToSell);
         }
