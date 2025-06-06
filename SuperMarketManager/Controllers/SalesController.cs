@@ -1,10 +1,13 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using SuperMarketManager.CoreBusiness;
 using SuperMarketManager.UseCases.CategoryUseCases.Interfaces;
 using SuperMarketManager.UseCases.ProductUseCases.Interfaces;
 using SuperMarketManager.ViewModels;
 
 namespace SuperMarketManager.Controllers;
+
+[Authorize]
 public class SalesController : Controller
 {
     private readonly IViewCategoriesUseCase _viewCategoriesUseCase;
